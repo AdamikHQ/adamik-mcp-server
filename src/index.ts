@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import axios from "axios";
 import { config } from "dotenv";
 import { existsSync } from "fs";
 import { resolve } from "path";
@@ -34,12 +35,14 @@ async function makeApiRequest<T>(
   const headers = {
     Accept: "application/json",
     Authorization: process.env.ADAMIK_API_KEY!,
+    "Content-Type": "application/json",
+    "User-Agent": "Adamik MCP Server",
   };
 
   try {
-    const response = await fetch(url, { headers, body, method });
+    const response = await axios({ url, headers, data: body, method });
 
-    return (await response.json()) as T;
+    return (await response) as T;
   } catch (error) {
     console.error("Error making Adamik API request:", error);
     return null;

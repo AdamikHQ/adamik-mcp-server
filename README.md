@@ -70,5 +70,5 @@ Query: Can you get my cosmos address cosmos1ksdpkf8l9ypzqqqx38y3x8sdkndw8ytjhuxp
 ```
 Query:
 - Can you check first the Adamik API documentation to get the right path?
-- Can you send using my starknet account 0.02 STRK to 0x06D67f670BccF07213f8435bBa34EBDB076d5F129147374860e1DDC3C9eCbc1C? Encode the transaction, sign it, then broadcast it?
+- Can you send using my starknet account 0x05e1dfe469A9b7a504cA84102359467453aE530cFB5Ec70FF4239f91e964A08e 0.02 STRK  to 0x06D67f670BccF07213f8435bBa34EBDB076d5F129147374860e1DDC3C9eCbc1C? just encode the transaction, sign it without broadcasting it ?
 ```
