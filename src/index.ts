@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import axios from "axios";
 import { config } from "dotenv";
 import { existsSync } from "fs";
 import { resolve } from "path";
@@ -25,7 +26,7 @@ const server = new McpServer({
   version: "0.0.1",
 });
 
-// Helper function for making NWS API requests
+// Helper function for making Adamik API requests
 async function makeApiRequest<T>(
   url: string,
   method: "GET" | "POST",
@@ -34,16 +35,16 @@ async function makeApiRequest<T>(
   const headers = {
     Accept: "application/json",
     Authorization: process.env.ADAMIK_API_KEY!,
+    "Content-Type": "application/json",
+    "User-Agent": "Adamik MCP Server",
   };
 
   try {
-    const response = await fetch(url, { headers, body, method });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return (await response.json()) as T;
+    const response = await axios({ url, headers, data: body, method });
+
+    return response.data as T;
   } catch (error) {
-    console.error("Error making NWS request:", error);
+    console.error("Error making Adamik API request:", error);
     return null;
   }
 }
