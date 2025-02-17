@@ -1,9 +1,23 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { config } from "dotenv";
+import { existsSync } from "fs";
+import { resolve } from "path";
 import { ec } from "starknet";
 import z from "zod";
 
-const API_BASE = process.env.ADAMIK_API_BASE!;
+const envPath = resolve(__dirname, "../.env");
+console.error("Looking for .env file at:", envPath);
+console.error(".env file exists:", existsSync(envPath));
+
+const result = config({ path: envPath });
+
+if (result.error) {
+  console.error("Error loading .env file:", result.error);
+  process.exit(1);
+}
+
+const ADAMIK_API_BASE_URL = process.env.ADAMIK_API_BASE_URL!;
 
 // Create server instance
 const server = new McpServer({
@@ -62,7 +76,10 @@ server.tool(
   "Get the Adamik documentation",
   {},
   async () => {
-    const documentation = await makeApiRequest(`${API_BASE}/api`, "GET");
+    const documentation = await makeApiRequest(
+      `${ADAMIK_API_BASE_URL}/api`,
+      "GET"
+    );
 
     return {
       content: [
@@ -93,7 +110,7 @@ server.tool(
     body?: string;
   }) => {
     const documentation = await makeApiRequest(
-      `${API_BASE}/${path}`,
+      `${ADAMIK_API_BASE_URL}/${path}`,
       method,
       body
     );
