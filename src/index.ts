@@ -42,7 +42,7 @@ async function makeApiRequest<T>(
   try {
     const response = await axios({ url, headers, data: body, method });
 
-    return (await response) as T;
+    return response.data as T;
   } catch (error) {
     console.error("Error making Adamik API request:", error);
     return null;
