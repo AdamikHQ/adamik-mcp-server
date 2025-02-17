@@ -7,6 +7,10 @@ Clone repository
 install and Build
 
 ```
+  cp .env.example .env
+```
+
+```
   pnpm install
   pnpm run build
 ```

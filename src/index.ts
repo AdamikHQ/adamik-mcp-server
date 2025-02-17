@@ -21,7 +21,7 @@ const ADAMIK_API_BASE_URL = process.env.ADAMIK_API_BASE_URL!;
 
 // Create server instance
 const server = new McpServer({
-  name: "adamik-ai",
+  name: "adamik-mcp-server",
   version: "0.0.1",
 });
 
