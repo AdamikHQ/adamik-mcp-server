@@ -1,6 +1,8 @@
 # Adamik MCP Server
 
-<img src="intro.svg" alt="Adamik Claude Logo" width="217" height="90"/>
+<p align="center">
+  <img src="logo.svg" alt="Adamik Logo" width="461" height="207"/>
+</p>
 
 ## Overview
 
