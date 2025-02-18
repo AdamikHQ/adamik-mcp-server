@@ -1,5 +1,7 @@
 # Adamik MCP Server
 
+<img src="intro.svg" alt="Adamik Claude Logo" width="217" height="90"/>
+
 ## Overview
 
 The Adamik MCP Server is a middleware communication protocol server that enables interaction with 60+ blockchain networks through Claude Desktop in both read and write modes. This integration provides a standardized, multi-chain API, allowing developers to seamlessly interact with diverse blockchains for transaction management, account insights, staking, and token interactions, all through a unified and enterprise-grade interface.
