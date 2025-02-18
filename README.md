@@ -6,11 +6,11 @@
 
 ## Overview
 
-The Adamik MCP Server is a middleware communication protocol server that enables interaction with 60+ blockchain networks through Claude Desktop in both read and write modes. This integration provides a standardized, multi-chain API, allowing developers to seamlessly interact with diverse blockchains for transaction management, account insights, staking, and token interactions, all through a unified and enterprise-grade interface.
+The Adamik MCP Server enables read and write interactions with 60+ blockchain networks through Claude Desktop. This server provides an integration with the standardized, multi-chain Adamik API, allowing developers to seamlessly interact with diverse blockchains for transaction management, account insights, staking, and token interactions, all through a unified and enterprise-grade interface.
 
 ## Prerequisites
 
-- Node.js (v16 or higher)
+- Node.js (v20 or higher)
 - pnpm
 - Git
 - Claude Desktop installed (https://claude.ai/download)
@@ -37,8 +37,8 @@ cp .env.example .env
 
 ```bash
 # Required - Your Adamik API key
-ADAMIK_API_KEY=your_api_key_here
-L="https://api.adamik.io"
+ADAMIK_API_KEY="your_api_key_here"
+ADAMIK_API_BASE_URL="https://api.adamik.io"
 ```
 
 ### 3. Get Your Free API Key
@@ -84,15 +84,15 @@ code ~/Library/Application\ Support/Claude/claude_desktop_config.json
 ### Example 1: Query Cosmos Address
 
 ```
-Query: Can you get my cosmos address cosmos1yvuhqg73fdzxvam9sj7mazfa38gpn7ulsavh7s? Can you check first Adamik API documentation to get the right path?
+Query: Can you get balances of my cosmos address cosmos1yvuhqg73fdzxvam9sj7mazfa38gpn7ulsavh7s? Can you check first Adamik API documentation to learn how to use it?
 ```
 
 ### Example 2: Starknet Transaction
 
 ```
 Query:
-- Can you check first the Adamik API documentation to get the right path?
-- Can you send using my starknet account 0x05e1dfe469A9b7a504cA84102359467453aE530cFB5Ec70FF4239f91e964A08e 0.02 STRK  to 0x06D67f670BccF07213f8435bBa34EBDB076d5F129147374860e1DDC3C9eCbc1C? just encode the transaction, sign it without broadcasting it ?
+- Can you check first the Adamik API documentation to learn how to use it?
+- Can you send using my starknet account 0x05e1dfe469A9b7a504cA84102359467453aE530cFB5Ec70FF4239f91e964A08e 0.02 STRK to 0x06D67f670BccF07213f8435bBa34EBDB076d5F129147374860e1DDC3C9eCbc1C? Just encode the transaction and sign it, without broadcasting it
 ```
 
 ## Features
