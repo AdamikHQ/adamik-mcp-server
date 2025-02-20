@@ -87,12 +87,28 @@ code ~/Library/Application\ Support/Claude/claude_desktop_config.json
 Query: Can you get balances of my cosmos address cosmos1yvuhqg73fdzxvam9sj7mazfa38gpn7ulsavh7s? Can you check first Adamik API documentation to learn how to use it?
 ```
 
-### Example 2: Starknet Transaction
+### Example 2: Multi-Chain Balance Queries
+
+```
+Query: Can you check my balances across different chains?
+- Ethereum: 0x3dD2504c27449a78Df04284129C380f3831cAF0d
+- Bitcoin: bc1qekphvuz20qvdhkzywfe29r9vvtwxrszvaxzmqm
+- StarkNet: 0x0548A1a8B82AB723C3D770052C4f2E6197215dC12E4bAaBDE1C571D7AA85760e
+- TON: UQAQ113dWkP2MOfXN2uv0qPFB-097flcLBhyv0_lhgXEUhwz
+```
+
+### Example 3: Transaction History and Validator Information
 
 ```
 Query:
-- Can you check first the Adamik API documentation to learn how to use it?
-- Can you send using my starknet account 0x05e1dfe469A9b7a504cA84102359467453aE530cFB5Ec70FF4239f91e964A08e 0.02 STRK to 0x06D67f670BccF07213f8435bBa34EBDB076d5F129147374860e1DDC3C9eCbc1C? Just encode the transaction and sign it, without broadcasting it
+- What's my latest operation on my dYdX account dydx1yvuhqg73fdzxvam9sj7mazfa38gpn7uleyzn78?
+- Can you provide information about this dYdX validator: dydxvaloper1ml44cenapnawcn4xy3w36jce0rg78dm8ajvypn?
+```
+
+### Example 4: Staking Rewards Query
+
+```
+Query: What are my current pending rewards on Osmosis address osmo1yvuhqg73fdzxvam9sj7mazfa38gpn7ulcxl8gz?
 ```
 
 ## Features
