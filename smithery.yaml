@@ -1,0 +1,29 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - adamikApiKey
+      - adamikApiBaseUrl
+      - starknetPrivateKey
+    properties:
+      adamikApiKey:
+        type: string
+        description: Your Adamik API key for authentication
+      adamikApiBaseUrl:
+        type: string
+        description: The base URL for the Adamik API (e.g., https://api.adamik.io)
+      starknetPrivateKey:
+        type: string
+        description: Your Starknet private key used for signing messages
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'sh', args: ['entrypoint.sh'], env: { ADAMIK_API_KEY: config.adamikApiKey, ADAMIK_API_BASE_URL: config.adamikApiBaseUrl, STARKNET_PRIVATE_KEY: config.starknetPrivateKey } })
+  exampleConfig:
+    adamikApiKey: your_api_key_here
+    adamikApiBaseUrl: https://api.adamik.io
+    starknetPrivateKey: your_starknet_private_key_here

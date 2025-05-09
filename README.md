@@ -1,4 +1,5 @@
 # Adamik MCP Server
+[![smithery badge](https://smithery.ai/badge/@AdamikHQ/adamik-mcp-server)](https://smithery.ai/server/@AdamikHQ/adamik-mcp-server)
 
 <p align="center">
   <img src="logo.svg" alt="Adamik Logo" width="346" height="155"/>
@@ -17,6 +18,16 @@ The Adamik MCP Server enables read and write interactions with 60+ blockchain ne
 - Claude Pro subscription required
 
 ## Installation
+
+### Installing via Smithery
+
+To install Adamik MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@AdamikHQ/adamik-mcp-server):
+
+```bash
+npx -y @smithery/cli install @AdamikHQ/adamik-mcp-server --client claude
+```
+
+### Installation Steps:
 
 ### 1. Clone Repository
 
