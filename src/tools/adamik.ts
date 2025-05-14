@@ -5,70 +5,6 @@ import { AdamikApiRequestOptions } from "../types";
 import z from "zod";
 
 /**
- * Add presentation hints based on the API path pattern
- */
-function addPresentationHints(path: string, data: any): any {
-  // Clone the data to avoid modifying the original
-  const result = {
-    data,
-    presentation: {},
-  };
-
-  // Set default presentation
-  result.presentation = {
-    style: "default",
-    highlights: [],
-  };
-
-  // Detect specific endpoint patterns
-  if (path.includes("/balances")) {
-    // Balance endpoints
-    result.presentation = {
-      style: "tabular",
-      title: "Wallet Balance",
-      description:
-        "Present this as a nicely formatted table with token symbols and values.",
-      highlights: ["totalValueUsd"],
-      format:
-        "Token balances should always show 4 decimal places for crypto assets.",
-      sorting: "Sort tokens by value (highest first).",
-    };
-  } else if (path.includes("/transactions")) {
-    // Transaction endpoints
-    result.presentation = {
-      style: "list",
-      title: "Transaction History",
-      description:
-        "Present as a chronological list with the most recent transactions first.",
-      timeFormat:
-        "Convert timestamps to local readable time (e.g., 'June 1, 2023 at 2:30 PM').",
-      highlights: ["recent"],
-      grouping: "Group by day for better readability.",
-    };
-  } else if (path.includes("/rewards")) {
-    // Staking rewards
-    result.presentation = {
-      style: "summary",
-      title: "Staking Rewards",
-      highlights: ["totalRewards", "annualPercentageRate"],
-      charts: ["rewards_over_time"],
-      recommendations: true,
-    };
-  } else if (path.includes("/validator")) {
-    // Validator information
-    result.presentation = {
-      style: "profile",
-      title: "Validator Profile",
-      highlights: ["commission", "uptime", "votingPower"],
-      showRank: true,
-      metrics: "Show performance metrics prominently",
-    };
-  }
-
-  return result;
-}
-
-/**
  * Register Adamik API related tools with the MCP server
  */
 export function registerAdamikTools(
@@ -160,7 +96,7 @@ export function registerAdamikTools(
   // Tool to call any Adamik API endpoint
   server.tool(
     "call-adamik-api",
-    "Call one of the endpoints of the Adamik API. Response includes data and presentation hints for optimal rendering.",
+    "Call one of the endpoints of the Adamik API",
     {
       path: z.string().describe("The path of the endpoint to call"),
       method: z.enum(["GET", "POST"]).describe("The HTTP method to use"),
@@ -232,17 +168,12 @@ export function registerAdamikTools(
           };
         }
 
-        // Add presentation hints based on the endpoint pattern
-        const enhancedResponse = addPresentationHints(path, response.data);
-
-        console.error(
-          "API SUCCESS - Returning enhanced response with presentation hints"
-        );
+        console.error("API SUCCESS - Returning response");
         return {
           content: [
             {
               type: "text",
-              text: JSON.stringify(enhancedResponse),
+              text: JSON.stringify(response.data),
             },
           ],
         };

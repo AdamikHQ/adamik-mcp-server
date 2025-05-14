@@ -23,70 +23,6 @@ if (!ADAMIK_API_BASE_URL || !ADAMIK_API_KEY) {
   process.exit(1);
 }
 
-/**
- * Add presentation hints based on the API path pattern
- */
-function addPresentationHints(path: string, data: any): any {
-  // Clone the data to avoid modifying the original
-  const result = {
-    data,
-    presentation: {},
-  };
-
-  // Set default presentation
-  result.presentation = {
-    style: "default",
-    highlights: [],
-  };
-
-  // Detect specific endpoint patterns
-  if (path.includes("/balances")) {
-    // Balance endpoints
-    result.presentation = {
-      style: "tabular",
-      title: "Wallet Balance",
-      description:
-        "Present this as a nicely formatted table with token symbols and values.",
-      highlights: ["totalValueUsd"],
-      format:
-        "Token balances should always show 4 decimal places for crypto assets.",
-      sorting: "Sort tokens by value (highest first).",
-    };
-  } else if (path.includes("/transactions")) {
-    // Transaction endpoints
-    result.presentation = {
-      style: "list",
-      title: "Transaction History",
-      description:
-        "Present as a chronological list with the most recent transactions first.",
-      timeFormat:
-        "Convert timestamps to local readable time (e.g., 'June 1, 2023 at 2:30 PM').",
-      highlights: ["recent"],
-      grouping: "Group by day for better readability.",
-    };
-  } else if (path.includes("/rewards")) {
-    // Staking rewards
-    result.presentation = {
-      style: "summary",
-      title: "Staking Rewards",
-      highlights: ["totalRewards", "annualPercentageRate"],
-      charts: ["rewards_over_time"],
-      recommendations: true,
-    };
-  } else if (path.includes("/validator")) {
-    // Validator information
-    result.presentation = {
-      style: "profile",
-      title: "Validator Profile",
-      highlights: ["commission", "uptime", "votingPower"],
-      showRank: true,
-      metrics: "Show performance metrics prominently",
-    };
-  }
-
-  return result;
-}
-
 // Create readline interface
 const rl = readline.createInterface({
   input: process.stdin,
@@ -227,23 +163,18 @@ async function handleApiCall(id: string, params: any) {
 
     const data = await makeApiRequest(path, method, parsedBody);
 
-    // Add presentation hints based on the endpoint pattern
-    const enhancedData = addPresentationHints(path, data);
-
     const response = {
       id,
       type: "tool_response",
       content: [
         {
           type: "text",
-          text: JSON.stringify(enhancedData),
+          text: JSON.stringify(data),
         },
       ],
     };
 
-    console.error(
-      "DIRECT TEST: Sending enhanced API call response with presentation hints"
-    );
+    console.error("DIRECT TEST: Sending API call response");
     process.stdout.write(JSON.stringify(response) + "\n");
   } catch (error) {
     const errorResponse = {
