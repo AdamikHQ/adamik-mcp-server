@@ -1,5 +1,19 @@
 #!/usr/bin/env node
 
+/**
+ * Adamik MCP Server Test Script (Production Build)
+ *
+ * This script tests the compiled MCP server by sending structured MCP requests directly to it.
+ *
+ * Note: In a real usage scenario:
+ * 1. Users type natural language queries to Claude (e.g., "What's my ETH balance?")
+ * 2. Claude processes this and generates structured MCP requests like those in sample-requests.json
+ * 3. The MCP server processes these structured requests and returns responses
+ * 4. Claude translates the technical responses back to natural language for the user
+ *
+ * This test script only tests steps 2-3 of this process (the MCP server's handling of requests).
+ */
+
 const { spawn } = require("child_process");
 const path = require("path");
 const fs = require("fs");
