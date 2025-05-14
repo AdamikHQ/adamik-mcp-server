@@ -9,7 +9,8 @@
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
     "test": "node test/test-server.js",
-    "test:dev": "node test/test-dev.js"
+    "test:dev": "node test/test-dev.js",
+    "test:direct": "node test/direct-test.js"
   },
   "files": [
     "build"
