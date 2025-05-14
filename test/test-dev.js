@@ -70,6 +70,8 @@ function formatJson(obj) {
   }
 }
 
+// Clear screen and print header
+console.clear();
 console.log(
   colors.bright +
     colors.fg.cyan +
@@ -87,85 +89,136 @@ const server = spawn(
   "npx",
   ["ts-node", path.resolve(__dirname, "../src/index.ts")],
   {
-    stdio: ["pipe", "pipe", "inherit"],
+    stdio: ["pipe", "pipe", "pipe"], // Capture stderr too
   }
 );
 
-// Create readline interface to parse server responses
-const rl = readline.createInterface({
+// Create readline interface for stdout
+const stdoutRL = readline.createInterface({
   input: server.stdout,
   terminal: false,
 });
 
+// Create readline interface for stderr
+const stderrRL = readline.createInterface({
+  input: server.stderr,
+  terminal: false,
+});
+
+// Log stderr output in gray
+stderrRL.on("line", (line) => {
+  console.log(colors.fg.gray + "SERVER LOG: " + line + colors.reset);
+});
+
 let responseCount = 0;
-let pendingRequests = new Set();
+let pendingRequests = new Map(); // Map of ID -> request details
+
+// Set a global timeout to prevent the script from running indefinitely
+const TEST_TIMEOUT = 30000; // 30 seconds
+const timeoutId = setTimeout(() => {
+  console.log(
+    colors.bright +
+      colors.fg.red +
+      "\n⚠️ TEST TIMED OUT - Server may not be responding correctly\n" +
+      colors.reset
+  );
+
+  if (pendingRequests.size > 0) {
+    console.log(
+      colors.fg.yellow +
+        "Pending requests that received no response:" +
+        colors.reset
+    );
+    pendingRequests.forEach((request, id) => {
+      console.log(
+        colors.fg.yellow + ` - ${id} (${request.tool})` + colors.reset
+      );
+    });
+  }
+
+  server.kill();
+  process.exit(1);
+}, TEST_TIMEOUT);
 
 // Handle server responses
-rl.on("line", (line) => {
-  try {
-    // Only try to parse lines that look like JSON
-    if (line.trim().startsWith("{")) {
-      const response = JSON.parse(line);
-      responseCount++;
-      pendingRequests.delete(response.id);
+stdoutRL.on("line", (line) => {
+  // First display the raw line for debugging
+  console.log(colors.fg.blue + "RAW OUTPUT: " + line + colors.reset);
 
-      printSeparator();
+  try {
+    // Try to parse as JSON
+    const response = JSON.parse(line);
+    responseCount++;
+
+    // Find the original request
+    const requestId = response.id;
+    const originalRequest = pendingRequests.get(requestId);
+    pendingRequests.delete(requestId);
+
+    printSeparator();
+    console.log(
+      colors.bright +
+        colors.fg.green +
+        `RESPONSE #${responseCount}: ${requestId}` +
+        colors.reset
+    );
+
+    if (originalRequest) {
       console.log(
-        colors.bright +
-          colors.fg.green +
-          `RESPONSE #${responseCount}: ${response.id}` +
+        colors.fg.cyan + `For tool: ${originalRequest.tool}` + colors.reset
+      );
+    }
+
+    // Check if response has error
+    const hasError =
+      response.error ||
+      (response.content &&
+        response.content[0] &&
+        response.content[0].text &&
+        response.content[0].text.includes("Error"));
+
+    if (hasError) {
+      console.log(colors.fg.red + "STATUS: ERROR" + colors.reset);
+      console.log(
+        colors.fg.red +
+          "ERROR DETAILS: " +
+          (response.error || response.content?.[0]?.text || "Unknown error") +
           colors.reset
       );
-
-      // Check if response has error
-      const hasError =
-        response.error ||
-        (response.content &&
-          response.content[0] &&
-          response.content[0].text &&
-          response.content[0].text.startsWith("Error"));
-
-      if (hasError) {
-        console.log(colors.fg.red + "STATUS: ERROR" + colors.reset);
-      } else {
-        console.log(colors.fg.green + "STATUS: SUCCESS" + colors.reset);
-      }
-
-      console.log(colors.bright + "CONTENT:" + colors.reset);
-      console.log(formatJson(response));
-      printSeparator();
-
-      // If we've gotten responses for all requests
-      if (
-        pendingRequests.size === 0 &&
-        responseCount === sampleRequests.length
-      ) {
-        console.log(
-          colors.bright +
-            colors.fg.cyan +
-            "\n✓ TEST COMPLETED SUCCESSFULLY - All requests processed\n" +
-            colors.reset
-        );
-        server.kill();
-        process.exit(0);
-      }
     } else {
-      // Log server output in gray
-      console.log(colors.fg.gray + line + colors.reset);
+      console.log(colors.fg.green + "STATUS: SUCCESS" + colors.reset);
+    }
+
+    console.log(colors.bright + "CONTENT:" + colors.reset);
+    console.log(formatJson(response));
+    printSeparator();
+
+    // If we've gotten responses for all requests, exit
+    if (pendingRequests.size === 0 && responseCount >= sampleRequests.length) {
+      clearTimeout(timeoutId);
+      console.log(
+        colors.bright +
+          colors.fg.cyan +
+          "\n✓ TEST COMPLETED SUCCESSFULLY - All requests processed\n" +
+          colors.reset
+      );
+      server.kill();
+      process.exit(0);
     }
   } catch (error) {
-    // Log non-JSON as server logs
-    console.log(colors.fg.gray + line + colors.reset);
+    // If not JSON, just output as server log
+    console.log(colors.fg.gray + "SERVER INFO: " + line + colors.reset);
   }
 });
 
 // Track server errors
 server.on("error", (error) => {
-  console.error(colors.fg.red + "Server error:", error + colors.reset);
+  console.error(colors.fg.red + "SERVER ERROR: " + error + colors.reset);
 });
 
 // Handle server exit
 server.on("exit", (code) => {
+  clearTimeout(timeoutId);
   if (code !== null && code !== 0) {
     console.error(
       colors.fg.red + `Server exited with code ${code}` + colors.reset
@@ -175,7 +228,25 @@ server.on("exit", (code) => {
 });
 
 // Give server time to initialize
+console.log(
+  colors.fg.yellow + "Waiting for server initialization..." + colors.reset
+);
+
 setTimeout(() => {
+  // Print status of pending requests every 5 seconds
+  const statusInterval = setInterval(() => {
+    if (pendingRequests.size > 0) {
+      console.log(
+        colors.fg.yellow +
+          `STATUS UPDATE: Waiting for ${pendingRequests.size} responses...` +
+          colors.reset
+      );
+    }
+  }, 5000);
+
+  // Make sure to clear the interval when exiting
+  process.on("exit", () => clearInterval(statusInterval));
+
   // Send each request individually
   let requestIndex = 0;
 
@@ -183,8 +254,8 @@ setTimeout(() => {
     if (requestIndex < sampleRequests.length) {
       const request = sampleRequests[requestIndex];
 
-      // Add to pending requests
-      pendingRequests.add(request.id);
+      // Store in pending requests map
+      pendingRequests.set(request.id, request);
 
       // Print request details
       printSeparator();
@@ -202,18 +273,23 @@ setTimeout(() => {
 
       // Send the request
       server.stdin.write(JSON.stringify(request) + "\n");
+      console.log(
+        colors.fg.blue + "SENT: " + JSON.stringify(request) + colors.reset
+      );
+
       requestIndex++;
 
       // Schedule next request after a delay
-      setTimeout(sendNextRequest, 2000);
+      setTimeout(sendNextRequest, 3000);
     }
   }
 
   sendNextRequest();
-}, 2000);
+}, 4000);
 
 // Handle script termination
 process.on("SIGINT", () => {
+  clearTimeout(timeoutId);
   console.log(colors.fg.yellow + "\nTerminating test...\n" + colors.reset);
   server.kill();
   process.exit(0);
