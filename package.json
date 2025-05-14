@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/test-server.js",
+    "test:dev": "ts-node src/index.ts < test/sample-requests.json"
   },
   "files": [
     "build"

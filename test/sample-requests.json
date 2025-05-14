@@ -1,0 +1,17 @@
+[
+  {
+    "id": "test-get-docs",
+    "type": "tool_call",
+    "tool": "get-adamik-documentation",
+    "params": {}
+  },
+  {
+    "id": "test-api-get",
+    "type": "tool_call",
+    "tool": "call-adamik-api",
+    "params": {
+      "path": "api",
+      "method": "GET"
+    }
+  }
+]
