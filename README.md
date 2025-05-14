@@ -1,4 +1,5 @@
 # Adamik MCP Server
+
 [![smithery badge](https://smithery.ai/badge/@AdamikHQ/adamik-mcp-server)](https://smithery.ai/server/@AdamikHQ/adamik-mcp-server)
 
 <p align="center">
@@ -8,6 +9,34 @@
 ## Overview
 
 The Adamik MCP Server enables read and write interactions with 60+ blockchain networks through Claude Desktop. This server provides an integration with the standardized, multi-chain Adamik API, allowing developers to seamlessly interact with diverse blockchains for transaction management, account insights, staking, and token interactions, all through a unified and enterprise-grade interface.
+
+## Development
+
+### Testing
+
+This project uses two different MCP implementations:
+
+1. **Full MCP Implementation** (`src/index.ts`)
+
+   - Uses the MCP library from `@modelcontextprotocol/sdk`
+   - Used in production with Claude Desktop
+   - May not work properly in direct test scripts due to stdio handling differences
+
+2. **Direct Test Implementation** (`src/direct-test.ts`)
+   - Simple custom implementation of the MCP protocol
+   - Bypasses the MCP library
+   - Useful for testing and debugging API interactions
+
+#### Running Tests
+
+- **Test with direct implementation:** `npm run test:direct` (recommended for development)
+- **Test with full MCP implementation:** `npm run test:dev` (may have limitations)
+
+#### Known Limitations
+
+The full MCP implementation works correctly when used with Claude Desktop but may have issues when run directly in test scripts. This is due to differences in how the MCP library handles stdin/stdout in different environments.
+
+For testing and development purposes, we recommend using the direct test implementation which provides the same functionality but with more reliable test output.
 
 ## Prerequisites
 

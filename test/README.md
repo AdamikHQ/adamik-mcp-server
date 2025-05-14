@@ -34,26 +34,50 @@ MCP is the protocol that allows AI assistants like Claude to interact with exter
 
 5. **User Response**: Claude translates the technical response into natural language and presents it to the user.
 
+## Two MCP Implementations
+
+This project includes two different MCP implementations:
+
+### 1. Full MCP Implementation (`src/index.ts`)
+
+- Uses the official MCP library from `@modelcontextprotocol/sdk`
+- This is what's used in production with Claude Desktop
+- May have limitations in test environments due to how the library handles stdin/stdout
+
+### 2. Direct Test Implementation (`src/direct-test.ts`)
+
+- Custom implementation of the MCP protocol without using the official library
+- Simpler, more transparent, and more stable for testing purposes
+- Provides the same functionality with more reliable test output
+- **Recommended for development and testing**
+
 ## Test Scripts
 
-The test scripts in this directory are specifically testing the MCP server component, not the entire Claude + MCP flow. That's why they use structured MCP requests directly rather than natural language.
+### 1. `test-direct.js` (Recommended)
 
-### sample-requests.json
+Tests the direct implementation by sending sample MCP requests and verifying responses.
 
-Contains examples of MCP requests that Claude might generate, structured in the format expected by the MCP server.
+```
+npm run test:direct
+```
 
-### test-server.js
+### 2. `test-dev.js`
 
-Tests the compiled server by sending sample MCP requests and verifying responses.
+Tests the server directly from TypeScript source using the official MCP library.
+Note: Due to stdin/stdout handling differences, this may not work reliably.
 
-### test-dev.js
+```
+npm run test:dev
+```
 
-Tests the server directly from TypeScript source (without building), useful during development.
+### 3. `test-server.js`
 
-## Running Tests
+Tests the compiled server using the official MCP library.
+Note: Due to stdin/stdout handling differences, this may not work reliably.
 
-- `npm test`: Run tests against the compiled server
-- `npm run test:dev`: Run tests directly against the TypeScript source
+```
+npm test
+```
 
 ## Writing New Tests
 
