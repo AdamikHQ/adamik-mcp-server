@@ -1,16 +1,52 @@
 [
   {
-    "id": "test-get-docs",
+    "id": "get-docs",
     "type": "tool_call",
     "tool": "get-adamik-documentation",
     "params": {}
   },
   {
-    "id": "test-api-get",
+    "id": "cosmos-balance",
     "type": "tool_call",
     "tool": "call-adamik-api",
     "params": {
-      "path": "api",
+      "path": "cosmos/address/cosmos1yvuhqg73fdzxvam9sj7mazfa38gpn7ulsavh7s/balances",
+      "method": "GET"
+    }
+  },
+  {
+    "id": "ethereum-balance",
+    "type": "tool_call",
+    "tool": "call-adamik-api",
+    "params": {
+      "path": "ethereum/address/0x3dD2504c27449a78Df04284129C380f3831cAF0d/balances",
+      "method": "GET"
+    }
+  },
+  {
+    "id": "dydx-tx-history",
+    "type": "tool_call",
+    "tool": "call-adamik-api",
+    "params": {
+      "path": "dydx/address/dydx1yvuhqg73fdzxvam9sj7mazfa38gpn7uleyzn78/transactions",
+      "method": "GET"
+    }
+  },
+  {
+    "id": "dydx-validator",
+    "type": "tool_call",
+    "tool": "call-adamik-api",
+    "params": {
+      "path": "dydx/validator/dydxvaloper1ml44cenapnawcn4xy3w36jce0rg78dm8ajvypn",
+      "method": "GET"
+    }
+  },
+  {
+    "id": "osmosis-rewards",
+    "type": "tool_call",
+    "tool": "call-adamik-api",
+    "params": {
+      "path": "osmosis/address/osmo1yvuhqg73fdzxvam9sj7mazfa38gpn7ulcxl8gz/rewards",
       "method": "GET"
     }
   }
