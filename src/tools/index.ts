@@ -12,7 +12,7 @@ export function registerAllTools(
   config: Config,
   apiClient: AdamikApiClient
 ) {
-  // Register StarkNet tools
+  // Register StarkNet tools - currently commented out in implementation as it's highly specific
   registerStarknetTools(server, config);
 
   // Register Adamik API tools

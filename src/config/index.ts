@@ -9,6 +9,7 @@ import z from "zod";
 const envSchema = z.object({
   ADAMIK_API_BASE_URL: z.string().url(),
   ADAMIK_API_KEY: z.string().min(1),
+  // StarkNet functionality is commented out, so this is optional
   STARKNET_PRIVATE_KEY: z.string().optional(),
 });
 

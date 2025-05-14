@@ -6,8 +6,11 @@ import z from "zod";
 
 /**
  * Register StarkNet related tools with the MCP server
+ * Currently commented out as it's highly specific
  */
 export function registerStarknetTools(server: McpServer, config: Config) {
+  // StarkNet tool is commented out as it's highly specific for now
+  /*
   server.tool(
     "sign-starknet-message",
     "Sign a message with a starknet wallet",
@@ -49,4 +52,5 @@ export function registerStarknetTools(server: McpServer, config: Config) {
       }
     }
   );
+  */
 }
