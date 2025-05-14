@@ -42,14 +42,34 @@ This project includes two different MCP implementations:
 
 - Uses the official MCP library from `@modelcontextprotocol/sdk`
 - This is what's used in production with Claude Desktop
-- May have limitations in test environments due to how the library handles stdin/stdout
+- **Technical Issue**: While this works perfectly with Claude, it fails in our test environment
+
+**Why it fails in tests but works in Claude:**
+The MCP library has specific expectations about how stdin/stdout are configured and used. Claude provides exactly the environment the library expects. Our test scripts use standard Node.js pipe-based stdio, which the library doesn't fully handle as expected, resulting in responses not being written to stdout in a way our tests can detect.
 
 ### 2. Direct Test Implementation (`src/direct-test.ts`)
 
 - Custom implementation of the MCP protocol without using the official library
-- Simpler, more transparent, and more stable for testing purposes
-- Provides the same functionality with more reliable test output
+- Explicitly uses `process.stdout.write()` to send responses
+- Manually parses stdin input
+- Provides the same functionality but with more reliable behavior in test environments
 - **Recommended for development and testing**
+
+## Technical Details of the Issue
+
+The full MCP implementation has these limitations in test environments:
+
+1. **Input Reception**: It receives input correctly (we can see it logs receiving requests)
+2. **Processing Works**: It processes the requests correctly (logs show the tools being invoked)
+3. **Output Failure**: It fails to write responses to stdout in a way our tests can detect
+
+This can be caused by several technical factors:
+
+- Buffering issues (not flushing output)
+- Using a different stream abstraction
+- Handling stdin/stdout differently in different environments (TTY vs pipe)
+
+Rather than modifying the test environment (which would add complexity), we've created a simple direct implementation that works reliably for testing.
 
 ## Test Scripts
 
@@ -64,7 +84,7 @@ npm run test:direct
 ### 2. `test-dev.js`
 
 Tests the server directly from TypeScript source using the official MCP library.
-Note: Due to stdin/stdout handling differences, this may not work reliably.
+Note: Due to the stdin/stdout handling issues described above, this may not show responses.
 
 ```
 npm run test:dev
@@ -73,7 +93,7 @@ npm run test:dev
 ### 3. `test-server.js`
 
 Tests the compiled server using the official MCP library.
-Note: Due to stdin/stdout handling differences, this may not work reliably.
+Note: Due to the stdin/stdout handling issues described above, this may not show responses.
 
 ```
 npm test

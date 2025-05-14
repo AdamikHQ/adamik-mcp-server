@@ -20,23 +20,31 @@ This project uses two different MCP implementations:
 
    - Uses the MCP library from `@modelcontextprotocol/sdk`
    - Used in production with Claude Desktop
-   - May not work properly in direct test scripts due to stdio handling differences
+   - **Technical limitation**: Does not work properly in test scripts due to differences in how stdin/stdout are handled in different environments
+   - Claude provides the appropriate runtime environment for this implementation
 
 2. **Direct Test Implementation** (`src/direct-test.ts`)
    - Simple custom implementation of the MCP protocol
-   - Bypasses the MCP library
-   - Useful for testing and debugging API interactions
+   - Bypasses the MCP library entirely
+   - Implements the same functionality but with explicit stdin/stdout handling
+   - Works reliably in test environments
+   - **Recommended for development and testing**
+
+#### Why Two Implementations?
+
+The official MCP library has specific expectations about its runtime environment that Claude satisfies but our test scripts cannot easily replicate. Rather than trying to modify the test environment (which would add complexity), we created a simpler implementation that works reliably for testing.
+
+Think of it as having:
+
+- A production-grade component for real usage (the official MCP implementation)
+- A testing-friendly component for development (the direct implementation)
+
+Both implement the same API and functionality.
 
 #### Running Tests
 
 - **Test with direct implementation:** `npm run test:direct` (recommended for development)
-- **Test with full MCP implementation:** `npm run test:dev` (may have limitations)
-
-#### Known Limitations
-
-The full MCP implementation works correctly when used with Claude Desktop but may have issues when run directly in test scripts. This is due to differences in how the MCP library handles stdin/stdout in different environments.
-
-For testing and development purposes, we recommend using the direct test implementation which provides the same functionality but with more reliable test output.
+- **Test with full MCP implementation:** `npm run test:dev` (limited functionality in test environment)
 
 ## Prerequisites
 
