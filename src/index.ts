@@ -24,13 +24,22 @@ async function main() {
       version: "0.0.1",
     });
 
+    // Add debug logging
+    console.error("Creating MCP Server instance");
+
     // Register all tools
     registerAllTools(server, config, apiClient);
 
     // Connect to stdio transport
+    console.error("Setting up MCP transport...");
     const transport = new StdioServerTransport();
-    await server.connect(transport);
 
+    // Add debug for stdin/stdout
+    process.stdin.on("data", (data) => {
+      console.error("STDIN RECEIVED:", data.toString().trim());
+    });
+
+    await server.connect(transport);
     console.error("Adamik MCP Server running on stdio");
   } catch (error) {
     console.error("Fatal error in main():", error);

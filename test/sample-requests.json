@@ -1,5 +1,13 @@
 [
   {
+    "id": "echo-test",
+    "type": "tool_call",
+    "tool": "echo",
+    "params": {
+      "message": "This is a test message"
+    }
+  },
+  {
     "id": "get-docs",
     "type": "tool_call",
     "tool": "get-adamik-documentation",
