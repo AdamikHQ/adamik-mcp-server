@@ -1,4 +1,5 @@
 # Adamik MCP Server
+
 [![smithery badge](https://smithery.ai/badge/@AdamikHQ/adamik-mcp-server)](https://smithery.ai/server/@AdamikHQ/adamik-mcp-server)
 
 <p align="center">
@@ -8,6 +9,42 @@
 ## Overview
 
 The Adamik MCP Server enables read and write interactions with 60+ blockchain networks through Claude Desktop. This server provides an integration with the standardized, multi-chain Adamik API, allowing developers to seamlessly interact with diverse blockchains for transaction management, account insights, staking, and token interactions, all through a unified and enterprise-grade interface.
+
+## Development
+
+### Testing
+
+This project uses two different MCP implementations:
+
+1. **Full MCP Implementation** (`src/index.ts`)
+
+   - Uses the MCP library from `@modelcontextprotocol/sdk`
+   - Used in production with Claude Desktop
+   - **Technical limitation**: Does not work properly in test scripts due to differences in how stdin/stdout are handled in different environments
+   - Claude provides the appropriate runtime environment for this implementation
+
+2. **Direct Test Implementation** (`src/direct-test.ts`)
+   - Simple custom implementation of the MCP protocol
+   - Bypasses the MCP library entirely
+   - Implements the same functionality but with explicit stdin/stdout handling
+   - Works reliably in test environments
+   - **Recommended for development and testing**
+
+#### Why Two Implementations?
+
+The official MCP library has specific expectations about its runtime environment that Claude satisfies but our test scripts cannot easily replicate. Rather than trying to modify the test environment (which would add complexity), we created a simpler implementation that works reliably for testing.
+
+Think of it as having:
+
+- A production-grade component for real usage (the official MCP implementation)
+- A testing-friendly component for development (the direct implementation)
+
+Both implement the same API and functionality.
+
+#### Running Tests
+
+- **Test with direct implementation:** `npm run test:direct` (recommended for development)
+- **Test with full MCP implementation:** `npm run test:dev` (limited functionality in test environment)
 
 ## Prerequisites
 
