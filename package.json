@@ -1,14 +1,12 @@
 {
   "name": "adamik-mcp-server",
+  "type": "module",
+  "module": "./src/module.ts",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "bin": {
     "adamik-mcp-server": "./build/index.js"
-  },
-  "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
     "build"
@@ -17,14 +15,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.4.1",
-    "axios": "^1.7.9",
-    "dotenv": "^16.4.7",
-    "starknet": "^6.23.1",
-    "zod": "^3.24.1"
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "tsx": "^4.19.4",
+    "zod": "^3.25.42"
   },
   "devDependencies": {
-    "@types/node": "^22.13.1",
-    "typescript": "^5.7.3"
+    "@types/node": "^22.15.29",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
   }
 }
