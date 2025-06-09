@@ -1,4 +1,5 @@
 # Adamik MCP Server
+
 [![smithery badge](https://smithery.ai/badge/@AdamikHQ/adamik-mcp-server)](https://smithery.ai/server/@AdamikHQ/adamik-mcp-server)
 
 <p align="center">
@@ -23,6 +24,7 @@ The Adamik MCP Server enables read and write interactions with 60+ blockchain ne
 ### Adding Adamik MCP Server to your MCP Client
 
 #### YAML (FastAgent Config File)
+
 ```yaml
 mcp:
   servers:
@@ -34,21 +36,19 @@ mcp:
 ```
 
 #### JSON (Claude Desktop / NextChat)
+
 ```json
 {
   "mcpServers": {
     "adamik": {
       "command": "npx",
-      "args": [
-        "@adamik/api-mcp-server"
-      ],
+      "args": ["@adamik/api-mcp-server"],
       "env": {
         "ADAMIK_API_KEY": "<your-adamik-api-key>"
       }
     }
   }
 }
-0
 ```
 
 ### Installing via Smithery
