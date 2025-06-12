@@ -1,4 +1,5 @@
 # Adamik MCP Server
+
 [![smithery badge](https://smithery.ai/badge/@AdamikHQ/adamik-mcp-server)](https://smithery.ai/server/@AdamikHQ/adamik-mcp-server)
 
 <p align="center">
@@ -14,49 +15,45 @@ The Adamik MCP Server enables read and write interactions with 60+ blockchain ne
 - Node.js (v20 or higher)
 - pnpm
 - Git
-- Claude Desktop installed (https://claude.ai/download)
-- Claude Pro subscription required
 - An Adamik API Key ([Get one here for free](https://adamik.io/))
 
+If using Claude make sure to have:
+
+- Claude Desktop installed (https://claude.ai/download)
+- Claude Pro subscription required (required for MCP Server)
+
 ## Installation
+
+npx @adamik/mcp-server
 
 ### Adding Adamik MCP Server to your MCP Client
 
 #### YAML (FastAgent Config File)
+
 ```yaml
 mcp:
   servers:
     adamik:
       command: "npx"
-      args: ["@adamik/api-mcp-server"]
+      args: ["@adamik/mcp-server"]
       env:
         ADAMIK_API_KEY: "<your-adamik-api-key>"
 ```
 
 #### JSON (Claude Desktop / NextChat)
+
 ```json
 {
   "mcpServers": {
     "adamik": {
       "command": "npx",
-      "args": [
-        "@adamik/api-mcp-server"
-      ],
+      "args": ["@adamik/mcp-server"],
       "env": {
         "ADAMIK_API_KEY": "<your-adamik-api-key>"
       }
     }
   }
 }
-0
-```
-
-### Installing via Smithery
-
-To install Adamik MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@AdamikHQ/adamik-mcp-server):
-
-```bash
-npx -y @smithery/cli install @AdamikHQ/adamik-mcp-server --client claude
 ```
 
 ### Local Installation
@@ -76,22 +73,7 @@ git clone git@github.com:AdamikHQ/adamik-mcp-server.git
 cd adamik-mcp-server
 ```
 
-#### 3. Configure environment variables
-
-- Create environment file:
-
-```bash
-cp .env.example .env
-```
-
-- Configure your environment variables in `.env`:
-
-```bash
-# Required - Your Adamik API key
-ADAMIK_API_KEY="your_api_key_here"
-```
-
-#### 4. Install dependencies and build:
+#### 3. Install dependencies and build:
 
 ```bash
 pnpm install
