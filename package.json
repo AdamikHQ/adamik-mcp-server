@@ -1,12 +1,12 @@
 {
-  "name": "adamik-mcp-server",
+  "name": "@adamik/mcp-server",
   "type": "module",
   "module": "./src/module.ts",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "bin": {
-    "adamik-mcp-server": "./build/index.js"
+    "@adamik/mcp-server": "./build/index.js"
   },
   "files": [
     "build"
@@ -24,6 +24,7 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "prepublishOnly": "npm run build"
   }
 }

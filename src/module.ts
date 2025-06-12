@@ -19,15 +19,14 @@ import {
   GetChainValidatorsPathParams,
   GetChainValidatorsQueryParams,
   GetChainValidatorsResponse,
-  GetSupportedChainsResponse,
   GetTokenDetailsResponse,
   GetTransactionDetailsPathParams,
   GetTransactionDetailsResponse,
   PubkeyToAddressPathParams,
   PubkeyToAddressRequestBody,
   PubkeyToAddressResponse,
-} from "./schemas.ts";
-import chains from "./chains.ts";
+} from "./schemas.js";
+import chains from "./chains.js";
 
 type ApiError = {
   error: string;
