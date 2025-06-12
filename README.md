@@ -15,7 +15,7 @@ The Adamik MCP Server enables seamless interactions with 60+ blockchain networks
 - Interact with tokens and staking
 - Access enterprise-grade blockchain infrastructure
 
-**Optional:** Add the Adamik MCP **Signer** Server for public key generation and transaction signing to manage real blockchain assets.
+**Optional:** Add the [Adamik MCP Signer Server](https://github.com/AdamikHQ/signer-mcp-server) for public key generation and transaction signing to manage real blockchain assets.
 
 ## Quick Start
 
@@ -30,16 +30,8 @@ The Adamik MCP Server enables seamless interactions with 60+ blockchain networks
 
 ### Installation
 
-**Adamik MCP Server:**
-
 ```bash
 npx @adamik/mcp-server
-```
-
-**Adamik MCP Signer Server (optional):**
-
-```bash
-npx @adamik/signer-mcp-server
 ```
 
 ### Configuration
@@ -114,78 +106,11 @@ Update your client configuration to point to the local installation instead of u
 
 ---
 
-## Signer Server Setup
+## Transaction Signing
 
-The Adamik MCP **Signer** Server enables transaction signing and key management. Choose **one** of the following providers:
+For transaction signing capabilities, see the [Adamik MCP Signer Server](https://github.com/AdamikHQ/signer-mcp-server) repository.
 
-### Configuration
-
-Add the signer server to your MCP client:
-
-```json
-{
-  "mcpServers": {
-    "adamik-signer": {
-      "command": "npx",
-      "args": ["@adamik/signer-mcp-server"],
-      "env": {
-        // Add provider-specific environment variables below
-      }
-    }
-  }
-}
-```
-
-### Provider Options
-
-#### Local Seed (For Testing Only)
-
-```env
-UNSECURE_LOCAL_SEED="your 24 word BIP39 mnemonic phrase here"
-```
-
-⚠️ **Warning:** Only use for testing. Not secure for production.
-
-#### Turnkey
-
-```env
-TURNKEY_BASE_URL="https://api.turnkey.com"
-TURNKEY_API_PUBLIC_KEY="<your-turnkey-public-key>"
-TURNKEY_API_PRIVATE_KEY="<your-turnkey-private-key>"
-TURNKEY_ORGANIZATION_ID="<your-organization-id>"
-TURNKEY_WALLET_ID="<your-wallet-id>"
-```
-
-#### Dfns
-
-```env
-DFNS_CRED_ID="<your-credential-id>"
-DFNS_PRIVATE_KEY="<your-private-key>"
-DFNS_APP_ID="<your-app-id>"
-DFNS_AUTH_TOKEN="<your-auth-token>"
-DFNS_API_URL="<your-api-url>"
-```
-
-#### Sodot
-
-```env
-SODOT_VERTEX_URL_0="https://vertex-demo-0.sodot.dev"
-SODOT_VERTEX_API_KEY_0="<your-vertex-api-key-0>"
-SODOT_VERTEX_URL_1="https://vertex-demo-1.sodot.dev"
-SODOT_VERTEX_API_KEY_1="<your-vertex-api-key-1>"
-SODOT_VERTEX_URL_2="https://vertex-demo-2.sodot.dev"
-SODOT_VERTEX_API_KEY_2="<your-vertex-api-key-2>"
-SODOT_EXISTING_ECDSA_KEY_IDS="<comma-separated-ecdsa-key-ids>"
-SODOT_EXISTING_ED25519_KEY_IDS="<comma-separated-ed25519-key-ids>"
-```
-
-> **Note:** Contact each provider directly for authentication setup instructions.
-
----
-
-## What's Possible
-
-By combining both the Adamik MCP Server and Signer Server, you can:
+By combining both servers, you can:
 
 - Transfer native currencies and tokens
 - Stake and unstake across supported networks
