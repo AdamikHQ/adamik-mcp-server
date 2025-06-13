@@ -15,4 +15,6 @@ export default [
   "optimism",
   "optimism-sepolia",
   "bnb",
+  "ton",
+  "tron"
 ];
