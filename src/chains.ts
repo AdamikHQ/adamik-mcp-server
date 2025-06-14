@@ -14,7 +14,7 @@ export default [
   "holesky",
   "optimism",
   "optimism-sepolia",
-  "bnb",
+  "bsc",
   "ton",
-  "tron"
+  "tron",
 ];

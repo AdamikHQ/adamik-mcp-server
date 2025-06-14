@@ -104,6 +104,36 @@ ADAMIK_API_KEY=your-adamik-api-key-here
 
 Update your client configuration to point to the local installation instead of using `npx`.
 
+##### For Claude Desktop / NextChat (JSON)
+
+```json
+{
+  "mcpServers": {
+    "adamik-mcp-server": {
+      "command": "node",
+      "args": ["/Users/YourUsername/GitHub/adamik-mcp-server/build/index.js"],
+      "env": {
+        "ADAMIK_API_KEY": "<your-adamik-api-key>"
+      }
+    }
+  }
+}
+```
+
+##### For FastAgent (YAML)
+
+```yaml
+mcp:
+  servers:
+    adamik-mcp-server:
+      command: "node"
+      args: ["/Users/YourUsername/GitHub/adamik-mcp-server/build/index.js"]
+      env:
+        ADAMIK_API_KEY: "<your-adamik-api-key>"
+```
+
+**Note:** Replace `/Users/YourUsername/GitHub/adamik-mcp-server` with the actual path to your cloned repository.
+
 ---
 
 ## Transaction Signing
