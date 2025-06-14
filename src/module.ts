@@ -63,15 +63,11 @@ export const configSchema = z.object({
 
 export default function ({ config }: { config: z.infer<typeof configSchema> }) {
   const ADAMIK_API_BASE_URL =
-    process.env.ADAMIK_API_BASE_URL ??
-    config.adamikApiBaseUrl ??
-    "https://api.adamik.io/api";
+    process.env.ADAMIK_API_BASE_URL ?? config.adamikApiBaseUrl ?? "https://api.adamik.io/api";
   const ADAMIK_API_KEY = process.env.ADAMIK_API_KEY ?? config.adamikApiKey;
 
   if (!ADAMIK_API_BASE_URL || !ADAMIK_API_KEY) {
-    throw new Error(
-      "Environment variables ADAMIK_API_BASE_URL and ADAMIK_API_KEY must both be set"
-    );
+    throw new Error("Environment variables ADAMIK_API_BASE_URL and ADAMIK_API_KEY must both be set");
   }
 
   // Create server instance
@@ -111,22 +107,17 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
     }
   );
 
-  server.tool(
-    "getSupportedChains",
-    "Get a list of supported chain IDs",
-    {},
-    async () => {
-      const text = chains.join(",");
-      return {
-        content: [
-          {
-            type: "text",
-            text,
-          },
-        ],
-      };
-    }
-  );
+  server.tool("getSupportedChains", "Get a list of supported chain IDs", {}, async () => {
+    const text = chains.join(",");
+    return {
+      content: [
+        {
+          type: "text",
+          text,
+        },
+      ],
+    };
+  });
 
   server.tool(
     "listFeatures",
@@ -185,10 +176,7 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
       chainId: ChainIdSchema,
       pubkey: z.string(),
     },
-    async ({
-      chainId,
-      pubkey,
-    }: PubkeyToAddressPathParams & PubkeyToAddressRequestBody) => {
+    async ({ chainId, pubkey }: PubkeyToAddressPathParams & PubkeyToAddressRequestBody) => {
       const details = await makeApiRequest<PubkeyToAddressResponse>(
         `${ADAMIK_API_BASE_URL}/${chainId}/address/encode`,
         ADAMIK_API_KEY,
@@ -240,11 +228,7 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
       chainId: ChainIdSchema,
       accountId: z.string(),
     },
-    async ({
-      chainId,
-      accountId,
-      nextPage,
-    }: GetAccountHistoryPathParams & GetAccountHistoryQueryParams) => {
+    async ({ chainId, accountId, nextPage }: GetAccountHistoryPathParams & GetAccountHistoryQueryParams) => {
       const history = await makeApiRequest<GetAccountHistoryResponse>(
         `${ADAMIK_API_BASE_URL}/${chainId}/account/${accountId}/history${
           nextPage ? `?nextPage=${nextPage}` : ""
@@ -269,14 +253,9 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
     {
       chainId: ChainIdSchema,
     },
-    async ({
-      chainId,
-      nextPage,
-    }: GetChainValidatorsPathParams & GetChainValidatorsQueryParams) => {
+    async ({ chainId, nextPage }: GetChainValidatorsPathParams & GetChainValidatorsQueryParams) => {
       const validators = await makeApiRequest<GetChainValidatorsResponse>(
-        `${ADAMIK_API_BASE_URL}/${chainId}/validators${
-          nextPage ? `?nextPage=${nextPage}` : ""
-        }`,
+        `${ADAMIK_API_BASE_URL}/${chainId}/validators${nextPage ? `?nextPage=${nextPage}` : ""}`,
         ADAMIK_API_KEY
       );
       const text = JSON.stringify(validators);
