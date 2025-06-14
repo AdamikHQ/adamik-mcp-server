@@ -1,6 +1,13 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
+/**
+ * Adamik MCP Server - Tool Implementation
+ *
+ * Architecture documentation: TOOLS_ARCHITECTURE.md
+ */
+
 import z from "zod";
+import chains from "./chains.js";
 import {
   BroadcastTransactionPathParams,
   BroadcastTransactionRequestBody,
@@ -27,7 +34,6 @@ import {
   PubkeyToAddressRequestBody,
   PubkeyToAddressResponse,
 } from "./schemas.js";
-import chains from "./chains.js";
 
 type ApiError = {
   error: string;
@@ -92,6 +98,23 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
               "This MCP server allows any LLM to perform operations on over 60 blockchain networks. For read operations,",
               "this server is enough. But for operation that require wallet connection, submitting transactions, this tool should work in",
               "conjunction with the adamik-signer-mcp-server. That tool will handle wallet connection and signing.",
+              "\n\n",
+              "## TOOL CATEGORIES:",
+              "\n",
+              "**OPERATIONAL TOOLS** (for executing blockchain actions):",
+              "• getSupportedChains, listFeatures - Chain capabilities",
+              "• getAccountState, getAccountHistory - Account data",
+              "• getTokenDetails, getChainValidators - Network information",
+              "• deriveAddress - Address generation",
+              "• encodeTransaction, broadcastTransaction - Transaction lifecycle",
+              "• getTransactionDetails - Transaction status",
+              "\n",
+              "**SPECIFICATION TOOL** (for understanding API requirements):",
+              "• getApiSpecification - Complete API reference for exact schemas, formats, and validation rules",
+              "\n",
+              "**When to use each:**",
+              "- Use OPERATIONAL tools when users want current data or to execute actions",
+              "- Use getApiSpecification when you need to understand correct formats, troubleshoot errors, or provide guidance",
               "\n\n",
               "IMPORTANT: Many operations require blockchain addresses. If you need to check account balances, transaction history,",
               "or perform other account-specific operations, you have two options:",
@@ -361,6 +384,52 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
           {
             type: "text",
             text,
+          },
+        ],
+      };
+    }
+  );
+
+  // Simple in-memory cache for the API spec
+  let cachedApiSpec: any = null;
+
+  server.tool(
+    "getApiSpecification",
+    [
+      "Get the comprehensive OpenAPI specification for the Adamik API covering 80+ blockchain networks.",
+      "This provides authoritative reference for:",
+      "• Exact request/response schemas for all transaction types (transfer, stake, unstake, claimRewards, etc.)",
+      "• Complete chain family details (EVM, Cosmos, Bitcoin, Solana, Starknet, etc.) with supported features",
+      "• Precise parameter formats (amounts in smallest units, address formats, token IDs, validator addresses)",
+      "• Transaction encoding formats (RLP, PSBT, BOC, BCS, etc.) and signature requirements",
+      "• Account state schemas (native/token balances, staking positions, rewards)",
+      "• Error handling patterns and validation rules",
+      "• Pagination support for large datasets",
+      "Use this when you need exact API contract details for blockchain operations.",
+    ].join(" "),
+    {
+      section: z
+        .string()
+        .optional()
+        .describe(
+          "Optional: specific section like 'paths', 'components', 'schemas'. If not provided, returns full spec"
+        ),
+      refresh: z.boolean().optional().describe("Optional: refresh the cached specification from API"),
+    },
+    async ({ section, refresh }) => {
+      if (!cachedApiSpec || refresh) {
+        cachedApiSpec = await makeApiRequest<any>(
+          `${ADAMIK_API_BASE_URL.replace("/api", "")}/openapi.json`,
+          ADAMIK_API_KEY
+        );
+      }
+
+      const result = section && cachedApiSpec[section] ? cachedApiSpec[section] : cachedApiSpec;
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
           },
         ],
       };

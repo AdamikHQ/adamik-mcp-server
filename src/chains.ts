@@ -15,6 +15,7 @@ export default [
   "optimism",
   "optimism-sepolia",
   "bsc",
+  "base",
   "ton",
   "tron",
 ];

@@ -1,0 +1,133 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Tools Architecture Documentation Update Rule
+
+## Trigger Conditions
+This rule applies when:
+- `src/module.ts` is modified (tool additions, modifications, or deletions)
+- Any MCP server tool implementations are changed
+- Tool descriptions or parameters are updated
+
+## Mandatory Actions Required
+
+### ⚠️ CRITICAL: Update TOOLS_ARCHITECTURE.md
+
+When modifying `src/module.ts`, you **MUST** update `TOOLS_ARCHITECTURE.md` to maintain documentation synchronization.
+
+### Specific Update Requirements:
+
+#### 1. **Tool Addition**
+If you add a new tool to `src/module.ts`:
+- [ ] Categorize as Operational or Specification tool
+- [ ] Add to appropriate section in TOOLS_ARCHITECTURE.md
+- [ ] Update the `readMeFirst` tool description if categories change
+- [ ] Add usage examples and common workflows
+- [ ] Document any chain-specific behaviors
+- [ ] Update the tool count in overview section
+
+#### 2. **Tool Modification**
+If you modify an existing tool:
+- [ ] Update tool description in TOOLS_ARCHITECTURE.md
+- [ ] Modify affected usage patterns and examples
+- [ ] Update workflow documentation if behavior changes
+- [ ] Verify examples still reflect current API
+- [ ] Update parameter documentation if inputs/outputs change
+
+#### 3. **Tool Removal**
+If you remove a tool:
+- [ ] Remove from TOOLS_ARCHITECTURE.md categories
+- [ ] Update `readMeFirst` tool if needed
+- [ ] Remove or update affected workflows
+- [ ] Update examples that reference the removed tool
+- [ ] Check for broken workflow dependencies
+
+#### 4. **Parameter Changes**
+If you modify tool parameters:
+- [ ] Update parameter descriptions in documentation
+- [ ] Modify code examples to reflect new parameters
+- [ ] Update validation rules documentation
+- [ ] Verify chain-specific parameter guidance
+
+### Documentation Sections to Review:
+
+1. **Tool Categories** - Ensure new/modified tools are properly categorized
+2. **LLM Usage Patterns** - Update examples with current tool calls
+3. **Common Workflows** - Verify workflows still work with changes
+4. **Best Practices** - Add new guidance for new tools
+5. **Chain Family Specifics** - Document any chain-specific behaviors
+6. **Example Scenarios** - Update scenarios to reflect current capabilities
+7. **Maintenance Guidelines** - Keep checklists current
+
+### Quality Checklist:
+
+Before committing changes:
+- [ ] All new/modified tools documented in TOOLS_ARCHITECTURE.md
+- [ ] Code examples use proper TypeScript syntax (semicolons, trailing commas)
+- [ ] Examples reflect actual tool parameters and return values
+- [ ] Workflows demonstrate realistic usage patterns
+- [ ] Error handling examples are accurate
+- [ ] Chain-specific formatting requirements are documented
+
+### Verification Steps:
+
+1. **Compare module.ts with documentation**
+   - Tool count matches between code and docs
+   - Tool descriptions align with implementation
+   - Parameter schemas match documented examples
+
+2. **Test example workflows**
+   - Examples can be executed as written
+   - Return values match expected schemas
+   - Error scenarios are realistic
+
+3. **Check documentation completeness**
+   - All tools have usage guidance
+   - LLM patterns cover common scenarios
+   - Maintenance procedures are current
+
+### Auto-Generated Updates:
+
+Consider running these commands to verify synchronization:
+```bash
+# Count tools in module.ts
+grep -c "server.tool(" src/module.ts
+
+# List all tool names from module.ts
+grep -A1 'server\.tool(' src/module.ts | grep '".*"' | sed 's/.*"\(.*\)".*/\1/' | head -15
+
+# Verify documentation mentions all tools (extract tool names from backticks)
+grep -o '`[a-zA-Z]*`' TOOLS_ARCHITECTURE.md | sed 's/`//g' | sort | uniq
+
+# Quick diff check for tool count
+echo "Tools in code: $(grep -c 'server\.tool(' src/module.ts)"
+echo "Tools in docs: $(grep -o '\*\*`[^`]*`\*\*' TOOLS_ARCHITECTURE.md | wc -l | tr -d ' ')"
+```
+
+## Failure to Update Documentation
+
+**WARNING**: Failing to update TOOLS_ARCHITECTURE.md when modifying tools will result in:
+- ❌ Documentation drift and inconsistency
+- ❌ Poor LLM integration experience
+- ❌ Developer confusion and mistakes
+- ❌ Broken examples and workflows
+- ❌ Loss of design rationale and context
+
+## Integration with Development Workflow
+
+### Pre-commit Checklist:
+- [ ] `src/module.ts` changes reflected in `TOOLS_ARCHITECTURE.md`
+- [ ] Examples tested and verified working
+- [ ] Documentation builds without errors
+- [ ] Tool descriptions are clear and complete
+
+### Code Review Requirements:
+- Reviewers must verify documentation updates accompany code changes
+- Documentation changes should be reviewed for accuracy and completeness
+- Examples should be tested as part of the review process
+
+---
+
+**Remember**: The TOOLS_ARCHITECTURE.md file is not just documentation—it's the contract that enables effective LLM integration and developer onboarding. Keep it current and accurate!
