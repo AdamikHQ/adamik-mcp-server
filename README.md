@@ -6,6 +6,10 @@
   <img src="logo.svg" alt="Adamik Logo" width="346" height="155"/>
 </p>
 
+<a href="https://glama.ai/mcp/servers/@AdamikHQ/adamik-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@AdamikHQ/adamik-mcp-server/badge" alt="Adamik Server MCP server" />
+</a>
+
 ## Overview
 
 The Adamik MCP Server enables seamless interactions with 60+ blockchain networks through any MCP client, including Claude Desktop. This server integrates with the multi-chain Adamik API, allowing you to:
