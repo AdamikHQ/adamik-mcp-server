@@ -116,6 +116,23 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
               "- Use OPERATIONAL tools when users want current data or to execute actions",
               "- Use getApiSpecification when you need to understand correct formats, troubleshoot errors, or provide guidance",
               "\n\n",
+              "## CRITICAL: DECIMAL HANDLING",
+              "\n",
+              "All balance amounts are returned in SMALLEST UNITS (wei, satoshis, etc.), NOT human-readable values.",
+              "ALWAYS follow this pattern:",
+              "\n",
+              "**For NATIVE CURRENCY balances:**",
+              "1. Call listFeatures(chainId) to get the native currency decimals",
+              "2. Call getAccountState(chainId, accountId) to get raw balances",
+              "3. Convert: human_readable = raw_amount ÷ 10^decimals",
+              "Example: Optimism ETH balance '5354656887913579' with 18 decimals = 0.0054 ETH (not 5.35 ETH!)",
+              "\n",
+              "**For TOKEN balances:**",
+              "1. Call getAccountState(chainId, accountId) to get raw token balances and token IDs",
+              "2. Call getTokenDetails(chainId, tokenId) for EACH token to get its specific decimals",
+              "3. Convert each token: human_readable = raw_amount ÷ 10^token_decimals",
+              "Example: USDC balance '2245100' with 6 decimals = 2245100 ÷ 10^6 = 2.2451 USDC",
+              "\n\n",
               "IMPORTANT: Many operations require blockchain addresses. If you need to check account balances, transaction history,",
               "or perform other account-specific operations, you have two options:",
               "\n",
@@ -170,7 +187,11 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
 
   server.tool(
     "getTokenDetails",
-    "Fetches information about a non-native token (ERC-20, TRC-20, SPL, etc.) - not the chain's native currency",
+    [
+      "Fetches information about a non-native token (ERC-20, TRC-20, SPL, etc.) - not the chain's native currency.",
+      "CRITICAL: This provides the 'decimals' field needed to convert raw token amounts from getAccountState() to human-readable values.",
+      "Always call this for each token when displaying balances: human_readable = raw_amount ÷ 10^token_decimals",
+    ].join(" "),
     {
       chainId: ChainIdSchema,
       tokenId: z.string(),
@@ -221,7 +242,13 @@ export default function ({ config }: { config: z.infer<typeof configSchema> }) {
 
   server.tool(
     "getAccountState",
-    "Get the state of an account (balances and staking positions)",
+    [
+      "Get the state of an account (balances and staking positions).",
+      "IMPORTANT: Balance amounts are returned in smallest units (wei for ETH, satoshis for BTC, etc.).",
+      "For NATIVE currency: Use listFeatures() first to get the decimal places, then divide the raw amount by 10^decimals.",
+      "For TOKENS: Use getTokenDetails(chainId, tokenId) for each token to get its specific decimals, then convert each token amount.",
+      "Example: ETH has 18 decimals, so '5354656887913579' wei = 5354656887913579 ÷ 10^18 = 0.005354656887913579 ETH",
+    ].join(" "),
     {
       chainId: ChainIdSchema,
       accountId: z.string(),
