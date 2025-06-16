@@ -60,7 +60,7 @@
 - Type-safe schemas
 - Comprehensive error handling
 - Enterprise-grade infrastructure
-- Easy Signer integration (through [signer server](https://github.com/AdamikHQ/signer-mcp-server))
+- Easy integration with [signer server](https://github.com/AdamikHQ/signer-mcp-server)
 
 </td>
 </tr>
