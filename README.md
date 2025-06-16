@@ -232,19 +232,31 @@ graph LR
 
 We love contributions! Here's how to get started:
 
-1. 🍴 **Fork** this repository
-2. 🌿 **Create** a feature branch: `git checkout -b feature/amazing-feature`
-3. 💾 **Commit** your changes: `git commit -m 'Add amazing feature'`
-4. 📤 **Push** to the branch: `git push origin feature/amazing-feature`
-5. 🔄 **Open** a Pull Request
+1. **Fork** this repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** your changes: `git commit -m 'Add amazing feature'`
+4. **Push** to the branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request
 
 ### Development Setup
 
 ```bash
 git clone https://github.com/AdamikHQ/adamik-mcp-server.git
 cd adamik-mcp-server
-pnpm install
-pnpm dev
+pnpm instal
+pnpm build
+
+```
+
+**Testing your changes:**
+Update your MCP client config to point to the local build:
+
+```json
+{
+  "command": "node",
+  "args": ["/path/to/your/adamik-mcp-server/build/index.js"],
+  "env": { "ADAMIK_API_KEY": "your-api-key" }
+}
 ```
 
 ---
@@ -253,13 +265,7 @@ pnpm dev
 
 - 🔐 **[Adamik Signer Server](https://github.com/AdamikHQ/signer-mcp-server)** - Transaction signing & wallet management
 - 🌐 **[Adamik API](https://adamik.io/)** - Multi-chain blockchain infrastructure
-- ⚡ **[FastAgent](https://github.com/AdamikHQ/fast-agent)** - Enterprise MCP client
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- ⚡ **[FastAgent](https://github.com/evalstate/fast-agent)** - Enterprise MCP client
 
 ---
 
@@ -267,12 +273,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - 📖 **Documentation**: [adamik.io/docs](https://adamik.io/docs)
 - 💬 **Issues**: [GitHub Issues](https://github.com/AdamikHQ/adamik-mcp-server/issues)
-- 📧 **Contact**: [support@adamik.io](mailto:support@adamik.io)
-- 🐦 **Twitter**: [@AdamikHQ](https://twitter.com/AdamikHQ)
+- 📧 **Contact**: [contact@adamik.io](mailto:contact@adamik.io)
+- 🐦 **Twitter**: [@AdamikHQ](https://x.com/adamik_io)
 
 ---
 
 <p align="center">
   <strong>⭐ Star this repo if you find it useful!</strong><br/>
-  <em>Built with ❤️ by the <a href="https://adamik.io">Adamik</a> team</em>
+  <em>Developed by the <a href="https://adamik.io">Adamik</a> team</em>
 </p>
