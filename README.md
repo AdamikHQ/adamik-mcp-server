@@ -87,7 +87,7 @@
 
 ### 1️⃣ Get Your Free API Key
 
-Visit [adamik.io](https://adamik.io/) → Sign up → Copy your API key (takes 30 seconds)
+Visit [adamik.io](https://dashboard.adamik.io/) → Sign up → Copy your API key (takes 30 seconds)
 
 ### 2️⃣ Install & Configure
 
