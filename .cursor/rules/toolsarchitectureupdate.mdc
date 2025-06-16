@@ -13,7 +13,7 @@ This rule applies when:
 
 ## Mandatory Actions Required
 
-### ⚠️ CRITICAL: Update TOOLS_ARCHITECTURE.md
+### CRITICAL: Update TOOLS_ARCHITECTURE.md
 
 When modifying `src/module.ts`, you **MUST** update `TOOLS_ARCHITECTURE.md` to maintain documentation synchronization.
 
@@ -109,11 +109,11 @@ echo "Tools in docs: $(grep -o '\*\*`[^`]*`\*\*' TOOLS_ARCHITECTURE.md | wc -l |
 ## Failure to Update Documentation
 
 **WARNING**: Failing to update TOOLS_ARCHITECTURE.md when modifying tools will result in:
-- ❌ Documentation drift and inconsistency
-- ❌ Poor LLM integration experience
-- ❌ Developer confusion and mistakes
-- ❌ Broken examples and workflows
-- ❌ Loss of design rationale and context
+- Documentation drift and inconsistency
+- Poor LLM integration experience
+- Developer confusion and mistakes
+- Broken examples and workflows
+- Loss of design rationale and context
 
 ## Integration with Development Workflow
 
