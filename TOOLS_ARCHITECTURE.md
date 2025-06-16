@@ -4,6 +4,26 @@
 
 The Adamik MCP Server provides LLMs with access to 80+ blockchain networks through a carefully designed tool architecture. This document explains how the tools are organized and how LLMs should interact with them effectively.
 
+## CRITICAL: Decimal Handling Requirements
+
+**MOST IMPORTANT**: All balance amounts from blockchain APIs are returned in SMALLEST UNITS (wei, satoshis, µATOM, etc.), NOT human-readable values. LLMs MUST convert these before presenting to users.
+
+### Mandatory API Calls for Decimal Conversion:
+
+1. **For NATIVE currency balances**: ALWAYS call `listFeatures(chainId)` FIRST to get exact decimals
+2. **For TOKEN balances**: ALWAYS call `getTokenDetails(chainId, tokenId)` for each token's exact decimals
+3. **NEVER assume decimal values** - different chains use different decimals
+
+### Common Error Example:
+
+- **Raw ATOM balance**: `4191769000` µATOM
+- **ATOM decimals** (from listFeatures): `6`
+- **Correct conversion**: `4191769000 ÷ 10^6 = 4.191769 ATOM`
+- **WRONG presentation**: `4,191.769 ATOM` (decimal in wrong place)
+- **CORRECT presentation**: `4.191769 ATOM`
+
+**Always present to users in human-readable format (ETH, ATOM, BTC), never in smallest units unless debugging.**
+
 ## Tool Categories
 
 ### 1. **Orientation Tool**
@@ -31,7 +51,7 @@ The Adamik MCP Server provides LLMs with access to 80+ blockchain networks throu
 
 #### **Transaction Lifecycle**
 
-- **`encodeTransaction`** - Prepares transactions for signing (validates, computes fees/gas)
+- **`encodeTransaction`** - Prepares transactions for signing (validates, computes fees/gas). Supports all transaction types: transfer, transferToken, stake, unstake, claimRewards, withdraw, registerStake, convertAsset, and deployAccount
 - **`broadcastTransaction`** - Submits signed transactions to blockchain
 
 ### 3. **Specification Tool** (API Reference & Guidance)
@@ -86,6 +106,12 @@ getApiSpecification({
   section: "components/schemas/TransferTxData",
 });
 // Returns: amounts must be strings in smallest unit (wei for ETH)
+
+// User: "How do I format a convertAsset transaction?"
+getApiSpecification({
+  section: "components/schemas/ConvertAssetTxData",
+});
+// Returns: exact schema with from/to objects, slippage, etc.
 ```
 
 ### **Pattern 4: User Asks "How To" Questions**
@@ -107,9 +133,12 @@ getApiSpecification({
 ### **Account Analysis Workflow**
 
 1. **Validate chain support**: `getSupportedChains()` or `listFeatures()`
-2. **Get current state**: `getAccountState()` for balances
-3. **Get history**: `getAccountHistory()` for past transactions
-4. **Get token details**: `getTokenDetails()` for specific tokens
+2. **CRITICAL: Get decimals FIRST**: `listFeatures(chainId)` for native currency decimals
+3. **Get current state**: `getAccountState()` for raw balances (in smallest units)
+4. **For tokens**: Call `getTokenDetails(chainId, tokenId)` for each token's decimals
+5. **Convert all amounts**: `human_readable = raw_amount ÷ 10^decimals`
+6. **Get history**: `getAccountHistory()` for past transactions
+7. **Present to user**: Show converted amounts in human-readable format (ETH, ATOM, etc.)
 
 ### **Transaction Preparation Workflow**
 
@@ -127,6 +156,19 @@ getApiSpecification({
 4. **Prepare stake transaction**: `encodeTransaction()` with stake mode
 5. **Execute transaction**: Sign and `broadcastTransaction()`
 
+### **Asset Conversion Workflow (Swap/Bridge)**
+
+1. **Check conversion support**: `listFeatures()` for supported features
+2. **Get token details**: `getTokenDetails()` for both source and target tokens
+3. **Prepare conversion**: `encodeTransaction()` with convertAsset mode
+4. **Specify parameters**:
+   - `from`: source token and address
+   - `to`: target token, address, and optionally different chainId for cross-chain
+   - `amount`: conversion amount in smallest units
+   - `includeFees`: whether to include bridge/swap fees
+   - `slippage`: acceptable slippage tolerance (0-1)
+5. **Execute transaction**: Sign and `broadcastTransaction()`
+
 ## Best Practices for LLMs
 
 ### **1. Always Start with `readMeFirst`**
@@ -135,26 +177,34 @@ getApiSpecification({
 - Explains operational vs specification tool distinction
 - Includes important address requirements
 
-### **2. Use Operational Tools for Actions**
+### **2. CRITICAL: Always Handle Decimal Conversion Properly**
+
+- **MANDATORY**: Call `listFeatures(chainId)` for native currency decimals
+- **MANDATORY**: Call `getTokenDetails(chainId, tokenId)` for token decimals
+- **NEVER assume decimal values** - chains use different decimals (ATOM=6, ETH=18, BTC=8)
+- **ALWAYS convert**: `human_readable = raw_amount ÷ 10^decimals`
+- **NEVER show raw amounts** to users (wei, satoshis, µATOM) unless debugging
+
+### **3. Use Operational Tools for Actions**
 
 - When user wants current data: use `getAccountState`, `getAccountHistory`
 - When user wants to execute: use `encodeTransaction`, `broadcastTransaction`
 - When user needs network info: use `listFeatures`, `getChainValidators`
 
-### **3. Use `getApiSpecification` for Guidance**
+### **4. Use `getApiSpecification` for Guidance**
 
 - User gets validation errors
 - User asks about format requirements
 - You need exact schemas for troubleshooting
 - Chain-specific parameter requirements
 
-### **4. Handle Address Requirements**
+### **5. Handle Address Requirements**
 
 - Many operations require blockchain addresses
 - If user doesn't provide address, ask for it
 - Suggest connecting adamik-signer-mcp-server for wallet integration
 
-### **5. Error Handling Pattern**
+### **6. Error Handling Pattern**
 
 ```typescript
 // When user gets errors:
@@ -163,6 +213,58 @@ getApiSpecification({
 // 3. Provide specific format corrections
 // 4. Show examples from the specification
 ```
+
+## User Presentation Guidelines
+
+### **CRITICAL: Always Use Human-Readable Formats for End Users**
+
+- **ALWAYS present balances in standard units: ETH, BTC, USDC, ATOM, etc.**
+- **NEVER show smallest units (wei, satoshis, µATOM) to end users unless specifically needed**
+- **MUST call API endpoints to get exact decimals - NEVER assume decimal values**
+
+### **Mandatory Decimal Conversion Process**
+
+**EVERY TIME you display balances:**
+
+1. **Call API for decimals**:
+   - `listFeatures(chainId)` for native currency decimals
+   - `getTokenDetails(chainId, tokenId)` for token decimals
+2. **Get raw balance**: `getAccountState()` returns amounts in smallest units
+3. **Convert**: `human_readable = raw_amount ÷ 10^decimals`
+4. **Present**: Show converted amount with currency symbol
+
+### **When to Show Smallest Units**
+
+Only display raw blockchain values in these cases:
+
+- **Troubleshooting/debugging**: API integration issues
+- **Dust amounts**: Very low balances where human-readable shows 0.000000...
+- **Technical discussions**: Transaction fees, gas calculations
+- **Explicit requests**: User specifically asks for raw values
+- **Development/debugging**: API response analysis
+
+### **Presentation Examples**
+
+```
+GOOD: "Your ATOM balance is 4.191769 ATOM"
+BAD: "Your ATOM balance is 4191769000 µATOM"
+BAD: "Your ATOM balance is 4,191.769 ATOM" (incorrect decimal placement)
+
+GOOD: "Your Optimism balance is 0.0054 ETH"
+BAD: "Your Optimism balance is 5354656887913579 wei"
+
+GOOD: "You have 2.2451 USDC tokens"
+BAD: "You have 2245100 raw USDC units"
+
+GOOD (dust case): "You have a small amount: 123 wei (less than 0.000001 ETH)"
+```
+
+### **Common Decimal Conversion Errors to Avoid**
+
+- **ATOM**: 6 decimals, so `4191769000 ÷ 10^6 = 4.191769` (NOT 4,191.769)
+- **ETH**: 18 decimals, so `5354656887913579 ÷ 10^18 = 0.005354...` (NOT 5.35)
+- **BTC**: 8 decimals, so `100000000 ÷ 10^8 = 1.0` (NOT 100)
+- **USDC**: 6 decimals, so `2245100 ÷ 10^6 = 2.2451` (NOT 2,245.1)
 
 ## Chain Family Specifics
 
@@ -199,9 +301,13 @@ getApiSpecification({
 ```
 User: "What's my ATOM balance?"
 LLM Actions:
-1. getAccountState({ chainId: "cosmoshub", accountId: "cosmos1..." })
-2. Parse native balance and any staking positions
-3. Present in user-friendly format
+1. MANDATORY: listFeatures({ chainId: "cosmoshub" }) - get ATOM decimals (returns 6)
+2. getAccountState({ chainId: "cosmoshub", accountId: "cosmos1..." }) - get raw balance (e.g., "4191769000")
+3. CRITICAL: Convert using exact decimals: 4191769000 ÷ 10^6 = 4.191769
+4. Present to user: "Your ATOM balance is 4.191769 ATOM"
+
+NEVER present: "4191769000 µATOM" or "4,191.769 ATOM" (wrong decimal placement)
+ALWAYS convert raw amounts before showing to users!
 ```
 
 ### **Scenario 2: Error Troubleshooting**
@@ -223,6 +329,28 @@ LLM Actions:
 2. getApiSpecification() - understand transfer limitations
 3. Explain this requires external bridge service
 4. Show single-chain transfer format as alternative
+```
+
+### **Scenario 4: Asset Conversion/Swap**
+
+```
+User: "I want to convert 100 USDC to ETH on Ethereum"
+LLM Actions:
+1. listFeatures({ chainId: "ethereum" }) - check convertAsset support
+2. getTokenDetails({ chainId: "ethereum", tokenId: "usdc" }) - get USDC decimals (6)
+3. getTokenDetails({ chainId: "ethereum", tokenId: "native" }) - get ETH decimals (18)
+4. Convert amount: 100 USDC = 100 × 10^6 = "100000000" in smallest units
+5. encodeTransaction({
+     chainId: "ethereum",
+     body: {
+       mode: "convertAsset",
+       from: { tokenId: "usdc", address: "0x..." },
+       to: { tokenId: "native", address: "0x..." },
+       amount: "100000000",
+       includeFees: true,
+       slippage: 0.01
+     }
+   })
 ```
 
 ## Maintenance Guidelines
