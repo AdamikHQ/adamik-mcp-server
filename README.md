@@ -127,9 +127,9 @@ That's it! 🎉
 <em>Premium Required</em>
 </td>
 <td align="center">
-<img src="https://github.com/AdamikHQ/fast-agent/raw/main/logo.png" width="32" height="32"><br/>
+<img src="https://github.com/images/logo.png" width="32" height="32"><br/>
 <strong>FastAgent</strong><br/>
-<em>Enterprise Ready</em>
+<em>Developer Friendly</em>
 </td>
 <td align="center">
 🔧<br/>
