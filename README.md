@@ -221,9 +221,8 @@ ADAMIK_API_BASE_URL=https://api.adamik.io/api  # Optional
 graph LR
     A[MCP Client] --> B[Adamik MCP Server]
     B --> C[Adamik API]
+    A --> E[Optional: Signer Server]
     C --> D[60+ Blockchains]
-
-    B --> E[Optional: Signer Server]
     E --> F[Wallet Integration]
 ```
 
