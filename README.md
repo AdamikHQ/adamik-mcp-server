@@ -127,7 +127,7 @@ That's it! 🎉
 <em>Premium Required</em>
 </td>
 <td align="center">
-<img src="https://github.com/images/logo.png" width="32" height="32"><br/>
+🖥️<br/>
 <strong>FastAgent</strong><br/>
 <em>Developer Friendly</em>
 </td>
