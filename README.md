@@ -37,7 +37,7 @@
 
 - Ethereum, Bitcoin, Solana, Cosmos
 - Polygon, Arbitrum, Optimism, Base
-- Starknet, TON, Aptos, Tron, and many more
+- Starknet, Aptos, Tron, and many more
 
 ### 💰 **Complete Account Management**
 
