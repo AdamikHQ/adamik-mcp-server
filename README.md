@@ -269,9 +269,10 @@ Update your MCP client config to point to the local build:
 
 ## 🆘 Support
 
-- 📖 **Documentation**: [adamik.io/docs](https://docs.adamik.io/
+- 📖 **Documentation**: [docs.adamik.io](https://docs.adamik.io/)
 - 💬 **Issues**: [GitHub Issues](https://github.com/AdamikHQ/adamik-mcp-server/issues)
 - 📧 **Contact**: [contact@adamik.io](mailto:contact@adamik.io)
+- 💬 **Telegram**: [Adamik MCP Community](https://t.me/+5yRlc7EYTxw5ZGE0)
 - 🐦 **Twitter**: [@Adamik_io](https://x.com/adamik_io)
 
 ---
