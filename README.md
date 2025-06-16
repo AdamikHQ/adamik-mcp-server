@@ -37,7 +37,7 @@
 
 - Ethereum, Bitcoin, Solana, Cosmos
 - Polygon, Arbitrum, Optimism, Base
-- Starknet, TON, Aptos, and many more
+- Starknet, TON, Aptos, Tron, and many more
 
 ### 💰 **Complete Account Management**
 
@@ -143,31 +143,6 @@ That's it! 🎉
 </td>
 </tr>
 </table>
-
----
-
-## 🌟 Advanced Features
-
-### 🔐 **Enterprise Security**
-
-- Professional-grade API infrastructure
-- No private key handling (optional [signer server](https://github.com/AdamikHQ/signer-mcp-server))
-- Rate limiting and error handling
-- Production-ready reliability
-
-### ⚡ **Performance**
-
-- Cached responses for speed
-- Optimized for high-frequency requests
-- Minimal latency across all chains
-- Smart retry mechanisms
-
-### 🎨 **Developer Experience**
-
-- Full TypeScript support
-- Comprehensive documentation
-- Rich error messages
-- Extensive logging
 
 ---
 
