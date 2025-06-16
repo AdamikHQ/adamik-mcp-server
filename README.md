@@ -127,11 +127,6 @@ That's it! 🎉
 <em>Premium Required</em>
 </td>
 <td align="center">
-<img src="https://nextchat.dev/favicon.ico" width="32" height="32"><br/>
-<strong>NextChat</strong><br/>
-<em>Free & Open Source</em>
-</td>
-<td align="center">
 <img src="https://github.com/AdamikHQ/fast-agent/raw/main/logo.png" width="32" height="32"><br/>
 <strong>FastAgent</strong><br/>
 <em>Enterprise Ready</em>
