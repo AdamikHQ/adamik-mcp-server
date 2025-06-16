@@ -3,7 +3,6 @@
 [![NPM Version](https://img.shields.io/npm/v/@adamik/mcp-server?style=flat-square&color=blue)](https://www.npmjs.com/package/@adamik/mcp-server)
 [![Downloads](https://img.shields.io/npm/dm/@adamik/mcp-server?style=flat-square&color=green)](https://www.npmjs.com/package/@adamik/mcp-server)
 [![Smithery Badge](https://smithery.ai/badge/@AdamikHQ/adamik-mcp-server)](https://smithery.ai/server/@AdamikHQ/adamik-mcp-server)
-[![License](https://img.shields.io/github/license/AdamikHQ/adamik-mcp-server?style=flat-square)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/AdamikHQ/adamik-mcp-server?style=flat-square)](https://github.com/AdamikHQ/adamik-mcp-server/stargazers)
 
 <p align="center">
