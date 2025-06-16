@@ -265,16 +265,15 @@ Update your MCP client config to point to the local build:
 
 - 🔐 **[Adamik Signer Server](https://github.com/AdamikHQ/signer-mcp-server)** - Transaction signing & wallet management
 - 🌐 **[Adamik API](https://adamik.io/)** - Multi-chain blockchain infrastructure
-- ⚡ **[FastAgent](https://github.com/evalstate/fast-agent)** - Enterprise MCP client
 
 ---
 
 ## 🆘 Support
 
-- 📖 **Documentation**: [adamik.io/docs](https://adamik.io/docs)
+- 📖 **Documentation**: [adamik.io/docs](https://docs.adamik.io/
 - 💬 **Issues**: [GitHub Issues](https://github.com/AdamikHQ/adamik-mcp-server/issues)
 - 📧 **Contact**: [contact@adamik.io](mailto:contact@adamik.io)
-- 🐦 **Twitter**: [@AdamikHQ](https://x.com/adamik_io)
+- 🐦 **Twitter**: [@Adamik_io](https://x.com/adamik_io)
 
 ---
 
