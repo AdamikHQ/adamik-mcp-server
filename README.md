@@ -6,7 +6,7 @@
 [![GitHub Stars](https://img.shields.io/github/stars/AdamikHQ/adamik-mcp-server?style=flat-square)](https://github.com/AdamikHQ/adamik-mcp-server/stargazers)
 
 <p align="center">
-  <img src="logo.png" alt="Adamik Logo" width="346" height="155"/>
+  <img src="logo.png" alt="Adamik Logo"/>
 </p>
 
 <h2 align="center">🌐 Control 60+ Blockchains with Natural Language</h2>
