@@ -35,9 +35,9 @@
 
 ### 🔗 **60+ Blockchain Networks**
 
-- Ethereum, Bitcoin, Solana, Cosmosj
+- Ethereum, Bitcoin, Solana, Cosmos
 - Polygon, Arbitrum, Optimism, Base
-- Starknet, TON, Aptos, Tron, and many more
+- Starknet, TON, Aptos, and many more
 
 ### 💰 **Complete Account Management**
 
