@@ -465,21 +465,19 @@ export const RegisterStakeTxDataSchema = z.object({
   signedUnbondingSlashingTransaction: z.string(),
 });
 
-// ConvertAsset (for transaction encoding requests)
-// Allows converting from one asset to another, potentially across different chains
-// Supports both same-chain swaps and cross-chain bridge operations
 export const ConvertAssetTxDataRequestSchema = z.object({
   mode: z.literal("convertAsset"),
   from: z.object({
+    amount: z.string(),
     tokenId: z.string(),
     address: z.string(),
   }),
   to: z.object({
+    amount: z.string().optional(),
     chainId: z.string().optional(),
     tokenId: z.string(),
     address: z.string(),
   }),
-  amount: z.string(),
   includeFees: z.boolean(),
   slippage: z.number().min(0).max(1).optional(),
 });
@@ -488,15 +486,16 @@ export const ConvertAssetTxDataRequestSchema = z.object({
 export const ConvertAssetTxDataResponseSchema = z.object({
   mode: z.literal("convertAsset"),
   from: z.object({
+    amount: z.string(),
     tokenId: z.string(),
     address: z.string(),
   }),
   to: z.object({
+    amount: z.string().optional(),
     chainId: z.string().optional(),
     tokenId: z.string(),
     address: z.string(),
   }),
-  amount: z.string(),
   includeFees: z.boolean(),
   slippage: z.number().min(0).max(1).optional(),
 });
