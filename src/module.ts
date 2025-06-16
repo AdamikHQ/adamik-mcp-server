@@ -59,6 +59,19 @@ async function makeApiRequest<T>(
     method,
   });
   const data = await response.json();
+
+  // Check for specific Premium feature limitation error
+  if (response.status === 501 && data.status?.errors?.length > 0) {
+    const errorMessage = data.status.errors[0]?.message || "";
+    if (errorMessage.includes("convert asset feature is available to Adamik Premium users")) {
+      throw new Error(
+        `ADAMIK_PREMIUM_REQUIRED: The convertAsset feature requires an Adamik Premium subscription. ` +
+          `This feature allows you to swap and bridge assets across different chains. ` +
+          `To upgrade your account and access convertAsset functionality, please visit https://adamik.io/contact. `
+      );
+    }
+  }
+
   return data as T;
 }
 
