@@ -474,7 +474,7 @@ export const ConvertAssetTxDataRequestSchema = z.object({
   }),
   to: z.object({
     amount: z.string().optional(),
-    chainId: z.string().optional(),
+    chainId: ChainIdSchema.optional(),
     tokenId: z.string(),
     address: z.string(),
   }),
@@ -492,7 +492,7 @@ export const ConvertAssetTxDataResponseSchema = z.object({
   }),
   to: z.object({
     amount: z.string().optional(),
-    chainId: z.string().optional(),
+    chainId: ChainIdSchema.optional(),
     tokenId: z.string(),
     address: z.string(),
   }),
