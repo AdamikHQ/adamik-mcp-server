@@ -2,7 +2,7 @@
   "name": "@adamik/mcp-server",
   "type": "module",
   "module": "./src/module.ts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "bin": {
