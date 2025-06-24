@@ -10,6 +10,7 @@ export default [
   "babylon",
   "starknet",
   "aptos",
+  "solana",
   "sepolia",
   "holesky",
   "optimism",
